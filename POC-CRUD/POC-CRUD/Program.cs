@@ -23,7 +23,7 @@ builder.Services.AddApiVersioning(options =>
 // Adiciona a configuração do MySQL a partir do appsettings.json
 builder.Services.AddMySqlConfiguration(builder.Configuration);
 
-// Injeção de dependência
+// Injeção de dependências (para repositórios e services)
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
