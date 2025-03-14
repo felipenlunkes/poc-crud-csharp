@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DoeTech.Controllers;
+namespace POC_CRUD.Controllers;
 
 [Route("rest/v{version:apiVersion}/health")]
 [ApiVersion("1")] // Define a versão da API
@@ -23,10 +23,11 @@ public class HealthCheckController : ControllerBase
 
         var healthStatus = new
         {
-            status = "Healthy",
+            name,
             version,
             build,
-            releaseDate
+            releaseDate,
+            status = "Healthy"
         };
 
         return Ok(healthStatus);
