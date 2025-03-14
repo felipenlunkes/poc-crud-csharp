@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using POC_CRUD.Services;
 
 namespace POC_CRUD.Controllers;
 
@@ -6,29 +7,18 @@ namespace POC_CRUD.Controllers;
 [ApiVersion("1")] // Define a versão da API
 public class HealthCheckController : ControllerBase
 {
-    private readonly IConfiguration _configuration;
 
-    public HealthCheckController(IConfiguration configuration)
+    private readonly HealthCheckService _healthCheckService;
+    
+    public HealthCheckController(HealthCheckService healthCheckService)
     {
-        _configuration = configuration;
+        _healthCheckService = healthCheckService;
     }
 
     [HttpGet]
     public IActionResult GetHealthStatus()
     {
-        var name = _configuration["serviceName"] ?? "unknown";
-        var version = _configuration["version"] ?? "unknown";
-        var build = _configuration["build"] ?? "unknown";
-        var releaseDate = _configuration["releaseDate"] ?? "unknown";
-
-        var healthStatus = new
-        {
-            name,
-            version,
-            build,
-            releaseDate,
-            status = "Healthy"
-        };
+        var healthStatus = _healthCheckService.getHealthStatus();
 
         return Ok(healthStatus);
     }

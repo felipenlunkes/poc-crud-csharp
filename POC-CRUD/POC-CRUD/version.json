@@ -2,5 +2,8 @@
   "serviceName": "POC-CRUD",
   "version": "0.0.1",
   "build": "001",
-  "releaseDate": "2025-03-14"
+  "releaseDate": "2025-03-14",
+  "ConnectionStrings": {
+    "MySqlConnection": "Server=localhost;Database=poc_customer;User=root;Password=admin12345;"
+  }
 }
