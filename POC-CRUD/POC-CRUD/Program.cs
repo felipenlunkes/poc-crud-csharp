@@ -5,6 +5,8 @@ using ApiVersion = Microsoft.AspNetCore.Mvc.ApiVersion;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Obtêm os dados da aplicação. Obs: se não for encontrado, a aplicação falha ao subir (não opcional).
+// Isso não é obirgatório, essa implementação é minha mesmo
 builder.Configuration.AddJsonFile("version.json", optional: false, reloadOnChange: true).Build();
 
 builder.Services.AddControllers()
@@ -16,7 +18,7 @@ builder.Services.AddControllers()
 builder.Services.AddApiVersioning(options =>
 {
     options.AssumeDefaultVersionWhenUnspecified = true; // Se não especificar a versão, usa a padrão
-    options.DefaultApiVersion = new ApiVersion(1, 0); // Versão padrão v1
+    options.DefaultApiVersion = new ApiVersion(1, 0); // Versão v1
     options.ReportApiVersions = true; // Mostra no header da resposta as versões disponíveis
 });
 
