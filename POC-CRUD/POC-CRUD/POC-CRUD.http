@@ -1,0 +1,6 @@
+@POC_CRUD_HostAddress = http://localhost:5001
+
+GET {{POC_CRUD_HostAddress}}/rest/v1/health/
+Accept: application/json
+
+###

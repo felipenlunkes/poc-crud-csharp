@@ -1,0 +1,35 @@
+# Diretório do Rider e outras IDEs
+
+POC-CRUD/.idea/
+POC-CRUD/*.user
+POC-CRUD/POC-CRUD/*.user
+POC-CRUD/POC-CRUD/*.suo
+POC-CRUD/POC-CRUD/*.csproj.user
+
+# Build e Cache
+POC-CRUD/POC-CRUD/bin/
+POC-CRUD/POC-CRUD/obj/
+POC-CRUD/POC-CRUD/out/
+POC-CRUD/POC-CRUD/*.log
+POC-CRUD/POC-CRUD/logs/
+
+# Configurações Locais
+POC-CRUD/POC-CRUD/appsettings.Local.json
+POC-CRUD/POC-CRUD/appsettings.Secrets.json
+POC-CRUD/POC-CRUD/secrets.json
+
+# Node.js
+POC-CRUD/POC-CRUD/node_modules/
+POC-CRUD/POC-CRUD/npm-debug.log
+POC-CRUD/POC-CRUD/yarn-error.log
+
+# Arquivos temporários
+POC-CRUD/POC-CRUD/*.tmp
+POC-CRUD/POC-CRUD/*.bak
+
+# Migrations (opcional, comente se deseja versionar)
+# POC-CRUD/Migrations/
+
+# Arquivo de lock do NuGet (opcional, comente se quiser versionar)
+POC-CRUD/POC-CRUD/project.assets.json
+
