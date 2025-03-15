@@ -31,7 +31,7 @@ public class CustomerRepository : IRepository
         _context.SaveChanges();
     }
 
-    public void Delete(int id)
+    public void Delete(Guid id)
     {
         var product = _context.Customers.Find(id);
         if (product == null)

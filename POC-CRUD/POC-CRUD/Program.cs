@@ -31,6 +31,9 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
+// Rodar as migratios de forma automática na base
+MySqlConfig.ApplyMigrations(app.Services);
+
 app.MapControllers();
 
 app.Run();

@@ -43,12 +43,12 @@ public class CustomerController : ControllerBase
         if (id != customer.Id)
             return BadRequest();
 
-        _service.Update(customer);
+        _service.Update(id, customer);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public IActionResult Delete(Guid id)
     {
         _service.Delete(id);
         return NoContent();

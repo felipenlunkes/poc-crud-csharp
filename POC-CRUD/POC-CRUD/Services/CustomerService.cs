@@ -16,9 +16,32 @@ public class CustomerService : IService
 
     public Customer GetById(Guid id) => _repository.GetById(id);
 
-    public void Add(Customer product) => _repository.Add(product);
+    public void Add(Customer product)
+    {
+        product.Id = Guid.NewGuid();
+        _repository.Add(product);
+    }
 
-    public void Update(Customer product) => _repository.Update(product);
+    public void Update(Guid id, Customer product)
+    {
+        var customer = _repository.GetById(id);
+        if (customer == null)
+        {
+            throw new KeyNotFoundException("Customer not found");
+        }
+        
+        product.Id = id;
+        _repository.Update(product);
+    }
 
-    public void Delete(int id) => _repository.Delete(id);
+    public void Delete(Guid id)
+    {
+        var customer = _repository.GetById(id);
+        if (customer == null)
+        {
+            throw new KeyNotFoundException("Customer not found");
+        }
+        
+        _repository.Delete(id);
+    }
 }
