@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POC_CRUD.Data;
 
@@ -11,9 +12,11 @@ using POC_CRUD.Data;
 namespace POC_CRUD.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250315080736_AddNewModelMigration")]
+    partial class AddNewModelMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +67,6 @@ namespace POC_CRUD.Migrations
                     b.Property<string>("build")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("code")
-                        .HasColumnType("int");
 
                     b.Property<string>("name")
                         .IsRequired()

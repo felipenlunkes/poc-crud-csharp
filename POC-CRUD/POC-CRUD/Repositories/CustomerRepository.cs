@@ -1,10 +1,9 @@
 using POC_CRUD.Data;
 using POC_CRUD.Models;
-
-namespace POC_CRUD.Repositories;
-
 using System.Collections.Generic;
 using System.Linq;
+
+namespace POC_CRUD.Repositories;
 
 public class CustomerRepository : IRepository
 {
