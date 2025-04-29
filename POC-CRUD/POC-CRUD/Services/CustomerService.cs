@@ -16,13 +16,13 @@ public class CustomerService : IService
 
     public Customer GetById(Guid id) => _repository.GetById(id);
 
-    public void Add(Customer product)
+    public void Add(Customer input)
     {
-        product.Id = Guid.NewGuid();
-        _repository.Add(product);
+        input.Id = Guid.NewGuid();
+        _repository.Add(input);
     }
 
-    public void Update(Guid id, Customer product)
+    public void Update(Guid id, Customer input)
     {
         var customer = _repository.GetById(id);
         if (customer == null)
@@ -30,8 +30,8 @@ public class CustomerService : IService
             throw new KeyNotFoundException("Customer not found");
         }
         
-        product.Id = id;
-        _repository.Update(product);
+        input.Id = id;
+        _repository.Update(input);
     }
 
     public void Delete(Guid id)

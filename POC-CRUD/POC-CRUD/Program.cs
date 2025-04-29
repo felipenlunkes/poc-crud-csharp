@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Isso não é obirgatório, essa implementação é minha mesmo
 builder.Configuration.AddJsonFile("version.json", optional: false, reloadOnChange: true).Build();
 
+// serde JSON C#
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {

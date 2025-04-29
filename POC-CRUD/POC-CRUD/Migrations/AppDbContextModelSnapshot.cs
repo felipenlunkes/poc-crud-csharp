@@ -30,25 +30,29 @@ namespace POC_CRUD.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
@@ -62,26 +66,21 @@ namespace POC_CRUD.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("build")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("code")
                         .HasColumnType("int");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("releaseDate")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("status")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("version")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
