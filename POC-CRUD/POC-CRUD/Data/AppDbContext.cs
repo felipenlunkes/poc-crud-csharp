@@ -5,6 +5,7 @@ namespace POC_CRUD.Data;
 
 public class AppDbContext : DbContext
 {
+    public DbSet<User> Users { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<HealthStatus> HealthStatuses { get; set; }
 

@@ -61,12 +61,8 @@ namespace POC_CRUD.Migrations
 
             modelBuilder.Entity("POC_CRUD.Models.HealthStatus", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("build")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("code")
                         .HasColumnType("int");
@@ -83,9 +79,39 @@ namespace POC_CRUD.Migrations
                     b.Property<string>("version")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("build");
 
                     b.ToTable("HealthStatuses");
+                });
+
+            modelBuilder.Entity("POC_CRUD.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

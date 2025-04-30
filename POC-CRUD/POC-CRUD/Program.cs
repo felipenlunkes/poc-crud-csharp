@@ -1,6 +1,8 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using POC_CRUD.Configurations;
-using POC_CRUD.Repositories;
-using POC_CRUD.Services;
+using POC_CRUD.Exceptions;
 using ApiVersion = Microsoft.AspNetCore.Mvc.ApiVersion;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,25 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true; // Mostra no header da resposta as versões disponíveis
 });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
+            )
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 // Adiciona a configuração do MySQL a partir do appsettings.json
 builder.Services.AddMySqlConfiguration(builder.Configuration);
 
@@ -32,9 +53,17 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
-// Rodar as migratios de forma automática na base
+// Rodar as migrations de forma automática na base
 MySqlConfig.ApplyMigrations(app.Services);
 
 app.MapControllers();
+
+// Configura autenticação
+app.UseAuthentication();
+
+// Irá utilizar autenticação em endpoints protegidos
+app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandler>();
 
 app.Run();
