@@ -1,3 +1,4 @@
+using POC_CRUD.Exceptions;
 using POC_CRUD.Models;
 using POC_CRUD.Repositories;
 
@@ -12,36 +13,52 @@ public class CustomerService : IService
         _repository = repository;
     }
 
-    public IEnumerable<Customer> GetAll() => _repository.GetAll();
+    public IEnumerable<Customer> GetAll()
+    {
+        return _repository.GetAll();
+    }
 
-    public Customer GetById(Guid id) => _repository.GetById(id);
+    public Customer GetById(Guid id)
+    {
+        return _repository.GetById(id);
+    }
 
     public void Add(Customer input)
     {
         input.Id = Guid.NewGuid();
+        
         _repository.Add(input);
     }
 
     public void Update(Guid id, Customer input)
     {
-        var customer = _repository.GetById(id);
-        if (customer == null)
+        var customerToUpdate = _repository.GetById(id);
+        
+        if (customerToUpdate == null)
         {
-            throw new KeyNotFoundException("Customer not found");
+            throw new NotFoundException("Customer not found: " + id);
         }
         
-        input.Id = id;
-        _repository.Update(input);
+        customerToUpdate.Email = input.Email;
+        customerToUpdate.Address = input.Address;
+        customerToUpdate.Name = input.Name;
+        customerToUpdate.UpdatedAt = DateTime.UtcNow;
+        
+        _repository.Add(input);
     }
 
     public void Delete(Guid id)
     {
         var customer = _repository.GetById(id);
+        
         if (customer == null)
         {
-            throw new KeyNotFoundException("Customer not found");
+            throw new NotFoundException("Customer not found: " + id);
         }
         
-        _repository.Delete(id);
+        customer.UpdatedAt = DateTime.UtcNow;
+        customer.Removed = true;
+        
+        _repository.Add(customer);
     }
 }
