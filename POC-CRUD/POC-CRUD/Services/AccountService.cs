@@ -69,7 +69,7 @@ public class AccountService : IService
         _accountRepository.RemoveById(accountId);
     }
 
-    private void ValidateCommonInput(Account account)
+    private static void ValidateCommonInput(Account account)
     {
         if (account.Cpf == null && account.Cnpj == null)
         {
@@ -118,10 +118,7 @@ public class AccountService : IService
             throw new ValidationException("cnpj already used for another account");
         }
         
-        if (accountForCnpj != null) return accountForCnpj;
-        if (accountFoundForCpf != null) return accountFoundForCpf;
-        
-        return null;
+        return _accountRepository.GetById(accountId);
     }
 
 }
