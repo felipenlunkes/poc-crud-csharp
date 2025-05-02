@@ -46,10 +46,12 @@ public class CustomerController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put([FromBody] Guid id, [FromBody] Customer customer)
     {
-        
+
         if (id != customer.Id)
+        {
             return BadRequest();
-        
+        }
+
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);

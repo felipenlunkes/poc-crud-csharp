@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,7 @@ public class AuthController : ControllerBase
     {
         _loginService = loginService;
     }
-    
+
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest request)
     {
@@ -28,15 +27,15 @@ public class AuthController : ControllerBase
     public IActionResult Add([FromBody] User request)
     {
         var user = _loginService.AddUser(request);
-        
+
         return Ok(user);
     }
-    
+
     [HttpPut]
     public IActionResult Update([FromBody] Guid userId, [FromBody] User request)
     {
         var user = _loginService.Update(userId, request);
-        
+
         return Ok(user);
     }
 
@@ -45,8 +44,7 @@ public class AuthController : ControllerBase
     public IActionResult Delete([FromBody] Guid userId)
     {
         _loginService.RemoveUser(userId);
-        
+
         return NoContent();
     }
-    
 }

@@ -26,15 +26,22 @@ public class AuthLoginService : IService
     public User Update(Guid userId, User user)
     {
         
-        user.Id = userId;
+        var userToUpdate = _userRepository.GetById(userId);
+
+        if (userToUpdate == null)
+        {
+            throw new NotFoundException("User not found: " + userId);
+        }
         
-        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        userToUpdate.IsAdmin = user.IsAdmin;
+        userToUpdate.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        userToUpdate.UpdatedAt = DateTime.UtcNow;
         
         _userRepository.Add(user);
         
-        user.Password = null;
+        userToUpdate.Password = null;
         
-        return user;
+        return userToUpdate;
     }
     
     public User AddUser(User user)

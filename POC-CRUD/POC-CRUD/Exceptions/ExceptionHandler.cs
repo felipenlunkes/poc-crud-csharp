@@ -17,15 +17,21 @@ public class ExceptionHandler
         {
             await _next(context);
         }
-        catch (NotFoundException ex)
+        catch (NotFoundException exception)
         {
-            _logger.LogWarning(ex, "Recurso não encontrado");
+            _logger.LogWarning(exception, "Recurso não encontrado");
             context.Response.StatusCode = StatusCodes.Status404NotFound;
-            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+            await context.Response.WriteAsJsonAsync(new { error = exception.Message });
         }
-        catch (Exception ex)
+        catch (ValidationException exception)
         {
-            _logger.LogError(ex, "Erro indefinido");
+            _logger.LogInformation(exception, "Erro de validação");
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(new { error = exception.Message });
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "Erro indefinido");
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsJsonAsync(new { error = "Erro interno do servidor" });
         }

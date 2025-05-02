@@ -1,17 +1,15 @@
-using Microsoft.AspNetCore.Mvc;
 using POC_CRUD.Data;
+using POC_CRUD.Exceptions;
 using POC_CRUD.Models;
 
 namespace POC_CRUD.Repositories;
 
 public class UserRepository : IRepository
 {
-    private readonly IConfiguration _configuration;
     private readonly AppDbContext _dbContext;
 
-    public UserRepository(IConfiguration configuration, AppDbContext dbContext)
+    public UserRepository(AppDbContext dbContext)
     {
-        _configuration = configuration;
         _dbContext = dbContext;
     }
 
@@ -33,7 +31,17 @@ public class UserRepository : IRepository
 
     public void RemoveById(Guid id)
     {
-        _dbContext.Users.Remove(_dbContext.Users.FirstOrDefault(u => u.Id == id));
+        var userFound = _dbContext.Users.FirstOrDefault(u => u.Id == id && u.Removed == false);
+
+        if (userFound == null)
+        {
+            throw new NotFoundException("Usuário não encontrado para remover: " + id);
+        }
+        
+        userFound.UpdatedAt = DateTime.UtcNow;
+        userFound.Removed = true;
+        
+        _dbContext.Users.Add(userFound);
     } 
     
 }

@@ -5,15 +5,15 @@ namespace POC_CRUD.Models;
 
 public class User
 {
-    
+    [Key]
     public Guid Id { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "email is required")]
     [MaxLength(100)]
     [JsonProperty("email")]
     public string Email { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "password is required")]
     [MaxLength(100)]
     [JsonProperty("password")]
     public string Password { get; set; }
@@ -27,4 +27,7 @@ public class User
     
     [JsonProperty("updatedAt")]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    
+    [JsonIgnore]
+    public Boolean Removed { get; set; }
 }
