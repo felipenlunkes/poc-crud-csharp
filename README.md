@@ -2,13 +2,16 @@
 
 O POC-CRUD-csharp é uma prova de conceito de aplicação web backend desenvolvida em C# que implementa o acesso e manipulação de dados em uma base MySQL.
 
-**Funcionalidades implementadas**:
-* Configuração e utilização de uma base de dados **MySQL**;
-* Utilização do [Entity Framework](https://learn.microsoft.com/en-us/ef/) e [ASP.NET MVC](https://dotnet.microsoft.com/en-us/apps/aspnet/mvc);
-* Aplicação de Clean Architecture sobre o modelo MVC (**MVC + Services + Repositories**): **Controller** -> **Service** -> **Repository** para melhor segregação de responsabilidades;
-* Instanciação e injeção automática de dependências para classes que implementem as interfaces **IService** e **IRepository** criadas para o projeto;
-* Mapeamento de exceções para respostas HTTP válidas para cada contexto;
-* Uso de Web Token para acesso à endpoints que exigem autenticação. Além disso, determinados endpoints exigem que o usuário seja administrador. O suporte a essa validação também foi implementado;
-* Implementação de dois CRUDs iniciais: USER e ACCOUNT. O usuário é utilizado exclusivamente para autenticação, e cada conta está vinculada a apenas um usuário.
+**Funcionalidades já implementadas**:
+
+✅ Integração com banco de dados MySQL;
+✅ [Entity Framework](https://learn.microsoft.com/en-us/ef/) + [ASP.NET MVC](https://dotnet.microsoft.com/en-us/apps/aspnet/mvc);
+✅ Clean Architecture aplicada ao MVC (Controller → Service → Repository);
+✅ Injeção automática de dependências via interfaces IService e IRepository;
+✅ Mapeamento de exceções para respostas HTTP apropriadas;
+✅ Autenticação via JWT (incluindo verificação de admin para alguns endpoints);
+✅ CRUDs completos de User e Account (com vinculação entre eles).
+
+🔐 A aplicação já permite login autenticado, gerenciamento de usuários e contas e segue boas práticas de organização e separação de responsabilidades, utilizando um modelo **MVC + Services + Repositories**, não o modelo MVC convencional;
 
 Mais está por vir!
