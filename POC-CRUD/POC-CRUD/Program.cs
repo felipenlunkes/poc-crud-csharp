@@ -8,7 +8,8 @@ using ApiVersion = Microsoft.AspNetCore.Mvc.ApiVersion;
 var builder = WebApplication.CreateBuilder(args);
 
 // Obtêm os dados da aplicação. Obs: se não for encontrado, a aplicação falha ao subir (não opcional).
-// Isso não é obirgatório, essa implementação é minha mesmo
+// Isso não é obrigatório, essa implementação é minha mesmo (pode-se mover as configs para o arquivo
+// appsettings.json)
 builder.Configuration.AddJsonFile("version.json", optional: false, reloadOnChange: true).Build();
 
 // serde JSON C#
@@ -25,6 +26,7 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true; // Mostra no header da resposta as versões disponíveis
 });
 
+// Vamos configurar o processo de autenticação da aplicação
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -44,18 +46,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// Adiciona a configuração do MySQL a partir do appsettings.json
+// Adiciona a configuração do MySQL à partir do appsettings.json
 builder.Services.AddMySqlConfiguration(builder.Configuration);
 
-// Injeção de dependências (para repositórios e services)
+// Injeção de dependências (para repositories e services)
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
+// Consolidar o contexto da aplicação
 var app = builder.Build();
 
 // Rodar as migrations de forma automática na base
 MySqlConfig.ApplyMigrations(app.Services);
 
+// Mapear os controllers
 app.MapControllers();
 
 // Configura autenticação
@@ -64,6 +68,7 @@ app.UseAuthentication();
 // Irá utilizar autenticação em endpoints protegidos
 app.UseAuthorization();
 
+// Incluir handlers de exceções: mapeamento para resposta HTTP
 app.UseMiddleware<ExceptionHandler>();
 
 app.Run();
