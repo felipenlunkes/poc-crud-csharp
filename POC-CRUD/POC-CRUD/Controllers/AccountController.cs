@@ -20,6 +20,12 @@ public class AccountController : ControllerBase
     [HttpPost]
     public IActionResult Add([FromBody] Account request)
     {
+        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var user = _accountService.AddAccount(request);
         
         return Ok(user);
@@ -29,6 +35,11 @@ public class AccountController : ControllerBase
     [HttpPut]
     public IActionResult Update([FromBody] Guid accountId, [FromBody] Account request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var user = _accountService.UpdateAccount(accountId, request);
         
         return Ok(user);

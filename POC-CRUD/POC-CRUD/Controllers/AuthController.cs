@@ -26,6 +26,12 @@ public class AuthController : ControllerBase
     [HttpPost]
     public IActionResult Add([FromBody] User request)
     {
+        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var user = _loginService.AddUser(request);
 
         return Ok(user);
@@ -34,6 +40,12 @@ public class AuthController : ControllerBase
     [HttpPut]
     public IActionResult Update([FromBody] Guid userId, [FromBody] User request)
     {
+        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var user = _loginService.Update(userId, request);
 
         return Ok(user);

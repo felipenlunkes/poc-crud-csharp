@@ -18,7 +18,10 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Customer> Get() => _service.GetAll();
+    public IEnumerable<Customer> Get()
+    {
+        return _service.GetAll();
+    }
 
     [HttpGet("{id}")]
     public ActionResult<Customer> Get([FromBody] Guid id)
@@ -31,7 +34,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Customer customer)
+    public IActionResult Add([FromBody] Customer customer)
     {
 
         if (!ModelState.IsValid)
@@ -39,12 +42,13 @@ public class CustomerController : ControllerBase
             return BadRequest(ModelState);
         }
         
-        _service.Add(customer);
-        return CreatedAtAction(nameof(Get), new { id = customer.Id }, customer);
+        var customerAdded = _service.Add(customer);
+        
+        return Ok(customerAdded);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put([FromBody] Guid id, [FromBody] Customer customer)
+    public IActionResult Update([FromBody] Guid id, [FromBody] Customer customer)
     {
 
         if (id != customer.Id)
@@ -58,6 +62,7 @@ public class CustomerController : ControllerBase
         }
 
         _service.Update(id, customer);
+        
         return NoContent();
     }
 
@@ -65,6 +70,7 @@ public class CustomerController : ControllerBase
     public IActionResult Delete([FromBody] Guid id)
     {
         _service.Delete(id);
+        
         return NoContent();
     }
 }

@@ -23,11 +23,13 @@ public class CustomerService : IService
         return _repository.GetById(id);
     }
 
-    public void Add(Customer input)
+    public Customer Add(Customer input)
     {
         input.Id = Guid.NewGuid();
         
         _repository.Add(input);
+        
+        return input;
     }
 
     public void Update(Guid id, Customer input)
