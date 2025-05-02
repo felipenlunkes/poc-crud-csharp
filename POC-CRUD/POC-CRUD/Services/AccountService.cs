@@ -25,6 +25,18 @@ public class AccountService : IService
         return account;
     }
 
+    public Account AddAccount(Account account)
+    {
+        ValidateInputForAdd(account);
+
+        account.Id = Guid.NewGuid();
+        account.UpdatedAt = DateTime.UtcNow;
+
+        _accountRepository.Add(account);
+
+        return account;
+    }
+    
     public Account UpdateAccount(Guid accountId, Account account)
     {
         
@@ -43,18 +55,6 @@ public class AccountService : IService
         _accountRepository.Add(accountToUpdate);
 
         return accountToUpdate;
-    }
-
-    public Account AddAccount(Account account)
-    {
-        ValidateInputForAdd(account);
-
-        account.Id = Guid.NewGuid();
-        account.UpdatedAt = DateTime.UtcNow;
-
-        _accountRepository.Add(account);
-
-        return account;
     }
 
     public void RemoveAccount(Guid accountId)
@@ -92,6 +92,13 @@ public class AccountService : IService
         if (accountFoundForCpf != null || accountForCnpj != null)
         {
             throw new ValidationException("cpf or cnpj already used");
+        }
+        
+        var accountFoundForUserId = _accountRepository.GetByUserId(account.UserId);
+
+        if (accountFoundForUserId != null)
+        {
+            throw new ValidationException("userId already used for another account");
         }
     }
 
