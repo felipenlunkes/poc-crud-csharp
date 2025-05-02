@@ -20,7 +20,14 @@ public class CustomerService : IService
 
     public Customer GetById(Guid id)
     {
-        return _repository.GetById(id);
+        var customerFound =  _repository.GetById(id);
+
+        if (customerFound == null)
+        {
+            throw new NotFoundException("Customer not found: " + id);
+        }
+        
+        return customerFound;
     }
 
     public Customer Add(Customer input)
@@ -32,7 +39,7 @@ public class CustomerService : IService
         return input;
     }
 
-    public void Update(Guid id, Customer input)
+    public Customer Update(Guid id, Customer input)
     {
         var customerToUpdate = _repository.GetById(id);
         
@@ -46,7 +53,9 @@ public class CustomerService : IService
         customerToUpdate.Name = input.Name;
         customerToUpdate.UpdatedAt = DateTime.UtcNow;
         
-        _repository.Add(input);
+        _repository.Add(customerToUpdate);
+
+        return customerToUpdate;
     }
 
     public void Delete(Guid id)
