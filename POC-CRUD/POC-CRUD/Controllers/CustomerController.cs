@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using POC_CRUD.Models;
 using POC_CRUD.Services;
 
@@ -23,6 +24,7 @@ public class CustomerController : ControllerBase
         return _service.GetAll();
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public ActionResult<Customer> Get([FromBody] Guid id)
     {
@@ -31,6 +33,7 @@ public class CustomerController : ControllerBase
         return Ok(customer);
     }
 
+    [Authorize]
     [HttpPost]
     public IActionResult Add([FromBody] Customer customer)
     {
@@ -45,6 +48,7 @@ public class CustomerController : ControllerBase
         return Ok(customerAdded);
     }
 
+    [Authorize]
     [HttpPut("{customerId}")]
     public IActionResult Update(Guid customerId, [FromBody] Customer customer)
     {
@@ -59,6 +63,7 @@ public class CustomerController : ControllerBase
         return Ok(customerUpdated);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{customerId}")]
     public IActionResult Delete(Guid customerId)
     {

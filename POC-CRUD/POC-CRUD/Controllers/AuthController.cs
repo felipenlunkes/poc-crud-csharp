@@ -37,6 +37,7 @@ public class AuthController : ControllerBase
         return Ok(user);
     }
 
+    [Authorize]
     [HttpPut("{userId}")]
     public IActionResult Update(Guid userId, [FromBody] User request)
     {

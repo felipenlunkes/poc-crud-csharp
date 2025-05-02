@@ -54,6 +54,7 @@ public class AccountController : ControllerBase
         return NoContent();
     }
     
+    [Authorize]
     [HttpGet("{accountId}")]
     public IActionResult GetById(Guid accountId)
     {
