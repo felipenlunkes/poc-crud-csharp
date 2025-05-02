@@ -12,7 +12,7 @@ using POC_CRUD.Data;
 namespace POC_CRUD.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250502030538_InitialMigration")]
+    [Migration("20250502042630_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -91,6 +91,12 @@ namespace POC_CRUD.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
+
+                    b.Property<bool>("Removed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
