@@ -36,10 +36,9 @@ public class AccountService : IService
 
         return account;
     }
-    
+
     public Account UpdateAccount(Guid accountId, Account account)
     {
-        
         var accountToUpdate = ValidateInputForUpdate(accountId, account);
 
         if (accountToUpdate == null)
@@ -75,17 +74,17 @@ public class AccountService : IService
         {
             throw new ValidationException("cpf or cnpj is required");
         }
-        
+
         if (account.Cpf != null && account.Cnpj != null)
         {
             throw new ValidationException("invalid use of cpf and cnpj");
         }
     }
+
     private void ValidateInputForAdd(Account account)
     {
-        
         ValidateCommonInput(account);
-        
+
         var accountFoundForCpf = _accountRepository.GetByCpf(account.Cpf);
         var accountForCnpj = _accountRepository.GetByCnpj(account.Cnpj);
 
@@ -93,7 +92,7 @@ public class AccountService : IService
         {
             throw new ValidationException("cpf or cnpj already used");
         }
-        
+
         var accountFoundForUserId = _accountRepository.GetByUserId(account.UserId);
 
         if (accountFoundForUserId != null)
@@ -102,7 +101,7 @@ public class AccountService : IService
         }
     }
 
-    private Account? ValidateInputForUpdate(Guid accountId, Account account)
+    private Account ValidateInputForUpdate(Guid accountId, Account account)
     {
         ValidateCommonInput(account);
 
@@ -117,8 +116,7 @@ public class AccountService : IService
         {
             throw new ValidationException("cnpj already used for another account");
         }
-        
+
         return _accountRepository.GetById(accountId);
     }
-
 }

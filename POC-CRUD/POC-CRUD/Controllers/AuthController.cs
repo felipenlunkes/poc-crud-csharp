@@ -37,8 +37,8 @@ public class AuthController : ControllerBase
         return Ok(user);
     }
 
-    [HttpPut]
-    public IActionResult Update([FromBody] Guid userId, [FromBody] User request)
+    [HttpPut("{userId}")]
+    public IActionResult Update(Guid userId, [FromBody] User request)
     {
         
         if (!ModelState.IsValid)
@@ -52,8 +52,8 @@ public class AuthController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpDelete]
-    public IActionResult Delete([FromBody] Guid userId)
+    [HttpDelete("{userId}")]
+    public IActionResult Delete(Guid userId)
     {
         _loginService.RemoveUser(userId);
 

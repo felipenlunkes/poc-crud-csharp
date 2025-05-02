@@ -45,8 +45,8 @@ public class CustomerController : ControllerBase
         return Ok(customerAdded);
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update([FromBody] Guid id, [FromBody] Customer customer)
+    [HttpPut("{customerId}")]
+    public IActionResult Update(Guid customerId, [FromBody] Customer customer)
     {
         
         if (!ModelState.IsValid)
@@ -54,16 +54,16 @@ public class CustomerController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var customerUpdated = _service.Update(id, customer);
+        var customerUpdated = _service.Update(customerId, customer);
         
         return Ok(customerUpdated);
     }
 
-    [HttpDelete("{id}")]
-    public IActionResult Delete([FromBody] Guid id)
+    [HttpDelete("{customerId}")]
+    public IActionResult Delete(Guid customerId)
     {
         
-        _service.Delete(id);
+        _service.Delete(customerId);
         
         return NoContent();
     }

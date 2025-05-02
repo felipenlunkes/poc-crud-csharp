@@ -32,8 +32,8 @@ public class AccountController : ControllerBase
     }
     
     [Authorize]
-    [HttpPut]
-    public IActionResult Update([FromBody] Guid accountId, [FromBody] Account request)
+    [HttpPut("{accountId}")]
+    public IActionResult Update(Guid accountId, [FromBody] Account request)
     {
         if (!ModelState.IsValid)
         {
@@ -46,15 +46,16 @@ public class AccountController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpDelete]
-    public IActionResult Delete([FromBody] Guid accountId)
+    [HttpDelete("{accountId}")]
+    public IActionResult Delete(Guid accountId)
     {
         _accountService.RemoveAccount(accountId);
         
         return NoContent();
     }
     
-    public IActionResult GetById([FromBody] Guid accountId)
+    [HttpGet("{accountId}")]
+    public IActionResult GetById(Guid accountId)
     {
         var account = _accountService.GetById(accountId);
         
