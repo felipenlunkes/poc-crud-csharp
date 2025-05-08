@@ -62,4 +62,13 @@ public class AccountController : ControllerBase
         
         return Ok(account);
     }
+    
+    [Authorize]
+    [HttpGet("/user/{userId}")]
+    public IActionResult GetUserId(Guid userId)
+    {
+        var account = _accountService.GetByUserId(userId);
+        
+        return Ok(account);
+    }
 }

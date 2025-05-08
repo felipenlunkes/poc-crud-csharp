@@ -17,12 +17,6 @@ public class AuthController : ControllerBase
         _loginService = loginService;
     }
 
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request)
-    {
-        return _loginService.Login(request);
-    }
-
     [HttpPost]
     public IActionResult Add([FromBody] User request)
     {
@@ -59,5 +53,20 @@ public class AuthController : ControllerBase
         _loginService.RemoveUser(userId);
 
         return NoContent();
+    }
+
+    [Authorize]
+    [HttpGet("{userId}")]
+    public IActionResult GetById(Guid userId)
+    {
+        var user = _loginService.GetById(userId);
+        
+        return Ok(user);
+    }
+    
+    [HttpPost("login")]
+    public IActionResult Login([FromBody] LoginRequest request)
+    {
+        return _loginService.Login(request);
     }
 }

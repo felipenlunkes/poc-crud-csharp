@@ -36,13 +36,14 @@ namespace POC_CRUD.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Cnpj")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(14)
+                        .HasColumnType("varchar(14)");
 
                     b.Property<string>("Cpf")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 

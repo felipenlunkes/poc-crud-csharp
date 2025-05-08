@@ -21,40 +21,47 @@ public class AuthLoginService : IService
         _configuration = configuration;
         _userRepository = userRepository;
     }
+    
+        public User AddUser(User user)
+    {
 
+        if (_userRepository.GetByEmail(user.Email) != null)
+        {
+            throw new ValidationException("A user with this same email is already registered: " + user.Email);
+        }
+        
+        user.Id = Guid.NewGuid();
+        
+        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        
+        _userRepository.Add(user);
+        
+        user.Password = null;
+        
+        return user;
+    }
+    
     public User Update(Guid userId, User user)
     {
+        
         var userToUpdate = _userRepository.GetById(userId);
 
         if (userToUpdate == null)
         {
-            throw new NotFoundException("User not found: " + userId);
+            throw new NotFoundException("Usuário não encontrado: " + userId);
         }
-
+        
         userToUpdate.IsAdmin = user.IsAdmin;
         userToUpdate.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         userToUpdate.UpdatedAt = DateTime.UtcNow;
-
+        
         _userRepository.Add(user);
-
+        
         userToUpdate.Password = null;
-
+        
         return userToUpdate;
     }
-
-    public User AddUser(User user)
-    {
-        user.Id = Guid.NewGuid();
-
-        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-
-        _userRepository.Add(user);
-
-        user.Password = null;
-
-        return user;
-    }
-
+    
     public void RemoveUser(Guid userId)
     {
         var user = _userRepository.GetById(userId);
@@ -63,28 +70,19 @@ public class AuthLoginService : IService
         {
             throw new NotFoundException("User not found");
         }
-
+        
         _userRepository.RemoveById(userId);
     }
-
+    
     public IActionResult Login(LoginRequest request)
     {
-        if (request == null)
-        {
-            throw new ValidationException("request is required");
-        }
-
-        if (request.Email == null || request.Password == null)
-        {
-            throw new ValidationException("email and password are required");
-        }
-
         var user = _userRepository.GetByEmail(request.Email);
+        
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
-            return new UnauthorizedObjectResult("Invalid credentials");
+            return new UnauthorizedObjectResult("Invalid credential");
 
         var token = GenerateToken(user, _configuration);
-
+        
         return new OkObjectResult(new
         {
             token,
@@ -97,13 +95,27 @@ public class AuthLoginService : IService
         });
     }
 
+    public User GetById(Guid id)
+    {
+        var user = _userRepository.GetById(id);
+
+        if (user == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+        
+        user.Password = null;
+        
+        return user;
+    }
+    
     private string GenerateToken(User user, IConfiguration config)
     {
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
+            new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User") 
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));

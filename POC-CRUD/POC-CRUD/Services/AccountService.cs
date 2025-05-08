@@ -13,18 +13,6 @@ public class AccountService : IService
         _accountRepository = accountRepository;
     }
 
-    public Account GetById(Guid accountId)
-    {
-        var account = _accountRepository.GetById(accountId);
-
-        if (account == null)
-        {
-            throw new NotFoundException("Account not found: " + accountId);
-        }
-
-        return account;
-    }
-
     public Account AddAccount(Account account)
     {
         ValidateInputForAdd(account);
@@ -39,6 +27,7 @@ public class AccountService : IService
 
     public Account UpdateAccount(Guid accountId, Account account)
     {
+        
         var accountToUpdate = ValidateInputForUpdate(accountId, account);
 
         if (accountToUpdate == null)
@@ -68,23 +57,64 @@ public class AccountService : IService
         _accountRepository.RemoveById(accountId);
     }
 
-    private static void ValidateCommonInput(Account account)
+    public Account GetById(Guid accountId)
     {
+        var account = _accountRepository.GetById(accountId);
+
+        if (account == null)
+        {
+            throw new NotFoundException("Account not found: " + accountId);
+        }
+
+        return account;
+    }
+    
+    public Account GetByUserId(Guid userId)
+    {
+        var account = _accountRepository.GetByUserId(userId);
+
+        if (account == null)
+        {
+            throw new NotFoundException("Account not found for userId: " + userId);
+        }
+
+        return account;
+    }
+    
+    private void ValidateCommonInput(Account account)
+    {
+
+        if (account.Name == null && account.BusinessName == null)
+        {
+            throw new ValidationException("name or businessName is required");
+        }
+
+        if (account.Name != null && account.Cpf == null)
+        {
+            throw new ValidationException("cpf is required for name");
+        }
+        
+        if (account.BusinessName != null && account.Cnpj == null)
+        {
+            throw new ValidationException("cnpj is required for businessName");
+        }
+        
         if (account.Cpf == null && account.Cnpj == null)
         {
             throw new ValidationException("cpf or cnpj is required");
         }
-
+        
         if (account.Cpf != null && account.Cnpj != null)
         {
             throw new ValidationException("invalid use of cpf and cnpj");
         }
     }
-
+    
     private void ValidateInputForAdd(Account account)
     {
+        
         ValidateCommonInput(account);
-
+        
         var accountFoundForCpf = _accountRepository.GetByCpf(account.Cpf);
         var accountForCnpj = _accountRepository.GetByCnpj(account.Cnpj);
 
@@ -92,16 +122,9 @@ public class AccountService : IService
         {
             throw new ValidationException("cpf or cnpj already used");
         }
-
-        var accountFoundForUserId = _accountRepository.GetByUserId(account.UserId);
-
-        if (accountFoundForUserId != null)
-        {
-            throw new ValidationException("userId already used for another account");
-        }
     }
 
-    private Account ValidateInputForUpdate(Guid accountId, Account account)
+    private Account? ValidateInputForUpdate(Guid accountId, Account account)
     {
         ValidateCommonInput(account);
 
@@ -116,7 +139,11 @@ public class AccountService : IService
         {
             throw new ValidationException("cnpj already used for another account");
         }
-
-        return _accountRepository.GetById(accountId);
+        
+        if (accountForCnpj != null) return accountForCnpj;
+        if (accountFoundForCpf != null) return accountFoundForCpf;
+        
+        return null;
     }
+    
 }

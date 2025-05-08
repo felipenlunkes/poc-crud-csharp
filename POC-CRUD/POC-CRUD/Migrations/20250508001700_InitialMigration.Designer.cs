@@ -12,7 +12,7 @@ using POC_CRUD.Data;
 namespace POC_CRUD.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250502042630_InitialMigration")]
+    [Migration("20250508001700_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -39,13 +39,14 @@ namespace POC_CRUD.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Cnpj")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(14)
+                        .HasColumnType("varchar(14)");
 
                     b.Property<string>("Cpf")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
