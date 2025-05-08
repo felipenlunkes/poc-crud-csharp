@@ -20,7 +20,7 @@ Para subir a aplicação localmente, você precisa das seguintes dependências:
 
 * [**Docker**](https://docs.docker.com/engine/install/) (Linux) ou [**Docker Desktop**](https://docs.docker.com/desktop/setup/install/windows-install/) (Windows, **caso você não esteja usando o Docker no WSL**);
 * [**JetBrains Rider**](https://www.jetbrains.com/rider/) (Linux e Windows) ou [**Visual Studio Community 2022**](https://visualstudio.microsoft.com/pt-br/vs/community/) (Windows);
-* [**Postman**](https://www.postman.com/downloads/).
+* [**Postman**](https://www.postman.com/downloads/)
 
 Caso tenha todas as dependências satisfeitas, siga os passos à seguir:
 
