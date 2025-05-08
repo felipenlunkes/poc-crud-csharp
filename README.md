@@ -24,7 +24,7 @@ Para subir a aplicação localmente, você precisa das seguintes dependências:
 
 Caso tenha todas as dependências satisfeitas, siga os passos à seguir:
 
-* Abra o projeto em `POC-CRUD/` com usa IDE de escolha;
+* Abra o projeto em `POC-CRUD/` com sua IDE de escolha;
 * Localize o arquivo `docker-compose.yml`. Ele será utilizado para subir um contêiner com uma imagem do MySQL;
 
 Agora, vamos subir as dependências, utilizando, no shell ou terminal de sua escolha:
