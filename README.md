@@ -41,6 +41,8 @@ Após, inicie a aplicação em modo Release/http. Uma janela do seu navegador pa
 
 Importe o arquivo `Postman.json`, disponível dentro do diretório do projeto, no Postman, para acessar a API já implementada.
 
+> Lembre-se! **Vários endpoints requerem autenticação via token**. Veja em cada *request* no Postman ou nos *controllers* da aplicação. Caso alguma requisição não seja autorizada, há grande chance dela exigir um token. Para isso, faça login com um usuário criado por você. O endpoint de criação de usuário não requer autenticação via token. Lembre-se ainda que endpoints `DELETE` exigem que o usuário tenha *role* de administrador. 
+
 # Instruções para finalizar a aplicação
 
 Após encerrar a execução pela IDE, basta, no shell usado para executar o comando anterior, usar a combinação `Ctrl-C`. Caso tenha subido os contêiners com:
