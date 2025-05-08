@@ -29,9 +29,11 @@ public class Account
     [StringLength(14, MinimumLength = 14, ErrorMessage = "cnpj must have 14 characters without punctuation or dashes")]
     public string Cnpj { get; set; }
 
-    [JsonProperty("createdAt")] public DateTime CreatedAt { get; } = DateTime.UtcNow;
+    [JsonProperty("createdAt")]
+    public long CreatedAt { get; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
-    [JsonProperty("updatedAt")] public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    [JsonProperty("updatedAt")] 
+    public long UpdatedAt { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
     [Required(ErrorMessage = "allowsAdvertising is required")]
     [JsonProperty("allowsAdvertising")]

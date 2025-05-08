@@ -50,8 +50,8 @@ namespace POC_CRUD.Migrations
                     b.Property<bool>("Removed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("UpdatedAt")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
@@ -132,8 +132,8 @@ namespace POC_CRUD.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -151,8 +151,8 @@ namespace POC_CRUD.Migrations
                     b.Property<bool>("Removed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("UpdatedAt")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

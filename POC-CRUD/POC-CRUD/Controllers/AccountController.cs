@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using POC_CRUD.DTOs;
 using POC_CRUD.Models;
 using POC_CRUD.Services;
 
@@ -26,15 +27,16 @@ public class AccountController : ControllerBase
             return BadRequest(ModelState);
         }
         
-        var user = _accountService.AddAccount(request);
+        var account = _accountService.AddAccount(request);
         
-        return Ok(user);
+        return Ok(account);
     }
     
     [Authorize]
     [HttpPut("{accountId}")]
     public IActionResult Update(Guid accountId, [FromBody] Account request)
     {
+        
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -64,11 +66,20 @@ public class AccountController : ControllerBase
     }
     
     [Authorize]
-    [HttpGet("/user/{userId}")]
+    [HttpGet("user/{userId}")]
     public IActionResult GetUserId(Guid userId)
     {
         var account = _accountService.GetByUserId(userId);
         
         return Ok(account);
+    }
+    
+    [Authorize]
+    [HttpGet("query")]
+    public IActionResult Query([FromQuery] AccountQueryDto filter)
+    {
+        var results = _accountService.Query(filter);
+        
+        return Ok(results);
     }
 }

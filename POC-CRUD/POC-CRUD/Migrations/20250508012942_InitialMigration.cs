@@ -28,7 +28,7 @@ namespace POC_CRUD.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cnpj = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<long>(type: "bigint", nullable: false),
                     AllowsAdvertising = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Removed = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
@@ -93,8 +93,8 @@ namespace POC_CRUD.Migrations
                     Password = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedAt = table.Column<long>(type: "bigint", nullable: false),
+                    UpdatedAt = table.Column<long>(type: "bigint", nullable: false),
                     Removed = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>

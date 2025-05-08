@@ -12,7 +12,7 @@ using POC_CRUD.Data;
 namespace POC_CRUD.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250508001700_InitialMigration")]
+    [Migration("20250508012942_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -53,8 +53,8 @@ namespace POC_CRUD.Migrations
                     b.Property<bool>("Removed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("UpdatedAt")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
@@ -135,8 +135,8 @@ namespace POC_CRUD.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -154,8 +154,8 @@ namespace POC_CRUD.Migrations
                     b.Property<bool>("Removed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("UpdatedAt")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

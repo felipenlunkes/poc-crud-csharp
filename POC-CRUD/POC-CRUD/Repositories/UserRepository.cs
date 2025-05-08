@@ -1,4 +1,5 @@
 using POC_CRUD.Data;
+using POC_CRUD.DTOs;
 using POC_CRUD.Exceptions;
 using POC_CRUD.Models;
 
@@ -21,27 +22,69 @@ public class UserRepository : IRepository
 
     public User GetById(Guid id)
     {
-        return _dbContext.Users.Find(id);
+        return _dbContext.Users.FirstOrDefault(u => u.Id == id && u.Removed == false);
     }
     
     public User GetByEmail(string email)
     {
-        return _dbContext.Users.FirstOrDefault(u => u.Email == email);
+        return _dbContext.Users.FirstOrDefault(u => u.Email == email && u.Removed == false);
     }
 
     public void RemoveById(Guid id)
     {
+
         var userFound = _dbContext.Users.FirstOrDefault(u => u.Id == id && u.Removed == false);
 
         if (userFound == null)
         {
-            throw new NotFoundException("Usuário não encontrado para remover: " + id);
+            throw new NotFoundException("User not found to remove: " + id);
         }
         
-        userFound.UpdatedAt = DateTime.UtcNow;
+        userFound.UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         userFound.Removed = true;
         
-        _dbContext.Users.Add(userFound);
+        _dbContext.Users.Update(userFound);
+        _dbContext.SaveChanges();
     } 
     
+    public List<User> Query(UserQueryDto filter)
+    {
+        var query = _dbContext.Users.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(filter.Email)) {
+            query = query.Where(u => u.Email.Contains(filter.Email));
+        }
+
+        if (filter.IsAdmin != null)
+        {
+            query = query.Where(u => u.IsAdmin.Equals(filter.IsAdmin));
+        }
+        
+        if (filter.CreatedAtFrom != null)
+        {
+            query = query.Where(u => u.CreatedAt <= filter.CreatedAtFrom);
+        }
+
+        if (filter.CreatedAtTo != null)
+        {
+            query = query.Where(u => u.CreatedAt <= filter.CreatedAtTo);
+        }
+
+        query = query.Where(a => !a.Removed)
+            .OrderBy(a => a.Email)
+            .Skip((filter.Page - 1) * filter.PageSize)
+            .Take(filter.PageSize);
+
+        var result = query.Select(u => new User()
+        {
+            Id = u.Id,
+            Email = u.Email,
+            IsAdmin = u.IsAdmin,
+            CreatedAt = u.CreatedAt,
+            UpdatedAt = u.UpdatedAt,
+            Removed = u.Removed
+        }).ToList();
+
+        return result;
+    }
 }

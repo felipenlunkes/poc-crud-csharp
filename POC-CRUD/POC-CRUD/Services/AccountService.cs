@@ -1,3 +1,4 @@
+using POC_CRUD.DTOs;
 using POC_CRUD.Exceptions;
 using POC_CRUD.Models;
 using POC_CRUD.Repositories;
@@ -13,12 +14,12 @@ public class AccountService : IService
         _accountRepository = accountRepository;
     }
 
-    public Account AddAccount(Account account)
+     public Account AddAccount(Account account)
     {
         ValidateInputForAdd(account);
 
         account.Id = Guid.NewGuid();
-        account.UpdatedAt = DateTime.UtcNow;
+        account.UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         _accountRepository.Add(account);
 
@@ -38,7 +39,7 @@ public class AccountService : IService
         accountToUpdate.Name = account.Name;
         accountToUpdate.BusinessName = account.BusinessName;
         accountToUpdate.AllowsAdvertising = account.AllowsAdvertising;
-        accountToUpdate.UpdatedAt = DateTime.UtcNow;
+        accountToUpdate.UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         _accountRepository.Add(accountToUpdate);
 
@@ -80,8 +81,13 @@ public class AccountService : IService
 
         return account;
     }
+
+    public IEnumerable<Account> Query(AccountQueryDto filter)
+    {
+        return _accountRepository.Query(filter);
+    }
     
-    private void ValidateCommonInput(Account account)
+    private static void ValidateCommonInput(Account account)
     {
 
         if (account.Name == null && account.BusinessName == null)
@@ -124,7 +130,7 @@ public class AccountService : IService
         }
     }
 
-    private Account? ValidateInputForUpdate(Guid accountId, Account account)
+    private Account ValidateInputForUpdate(Guid accountId, Account account)
     {
         ValidateCommonInput(account);
 
@@ -145,5 +151,4 @@ public class AccountService : IService
         
         return null;
     }
-    
 }

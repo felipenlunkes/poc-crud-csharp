@@ -23,10 +23,10 @@ public class User
     public bool IsAdmin { get; set; }
 
     [JsonProperty("createdAt")]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow; 
+    public long CreatedAt { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); 
     
     [JsonProperty("updatedAt")]
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public long UpdatedAt { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     
     [JsonIgnore]
     public Boolean Removed { get; set; }

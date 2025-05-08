@@ -1,4 +1,5 @@
 using POC_CRUD.Data;
+using POC_CRUD.DTOs;
 using POC_CRUD.Exceptions;
 using POC_CRUD.Models;
 
@@ -48,9 +49,61 @@ public class AccountRepository : IRepository
             throw new NotFoundException("Account not found to remove: " + id);
         }
         
-        accountFound.UpdatedAt = DateTime.UtcNow;
+        accountFound.UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         accountFound.Removed = true;
 
-        _dbContext.Accounts.Add(accountFound);
+        _dbContext.Accounts.Update(accountFound);
+        _dbContext.SaveChanges();
+    }
+    
+    public List<Account> Query(AccountQueryDto filter)
+    {
+        var query = _dbContext.Accounts.AsQueryable();
+
+        if (filter.UserId != null) {
+            query = query.Where(a => a.UserId == filter.UserId);
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Name))
+        {
+            query = query.Where(a => a.Name.Contains(filter.Name));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.BusinessName))
+        {
+            query = query.Where(a => a.BusinessName.Contains(filter.BusinessName));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Cpf))
+        {
+            query = query.Where(a => a.Cpf.Equals(filter.Cpf));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Cnpj))
+        {
+            query = query.Where(a => a.Cnpj.Equals(filter.Cnpj));
+        }
+
+        if (filter.AllowsAdvertising != null)
+        {
+            query = query.Where(a => a.AllowsAdvertising.Equals(filter.AllowsAdvertising));
+        }
+        
+        if (filter.CreatedAtFrom != null)
+        {
+            query = query.Where(a => a.CreatedAt <= filter.CreatedAtFrom);
+        }
+
+        if (filter.CreatedAtTo != null)
+        {
+            query = query.Where(a => a.CreatedAt <= filter.CreatedAtTo);
+        }
+
+        query = query.Where(a => !a.Removed)
+            .OrderBy(a => a.Name)
+            .Skip((filter.Page - 1) * filter.PageSize)
+            .Take(filter.PageSize);
+
+        return query.ToList();
     }
 }

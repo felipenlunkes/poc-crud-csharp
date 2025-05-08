@@ -5,6 +5,7 @@ using POC_CRUD.Data;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using POC_CRUD.DTOs;
 using POC_CRUD.Exceptions;
 using POC_CRUD.Models;
 using POC_CRUD.Repositories;
@@ -15,11 +16,13 @@ public class AuthLoginService : IService
 {
     private readonly IConfiguration _configuration;
     private readonly UserRepository _userRepository;
+    private readonly AccountService _accountService;
 
-    public AuthLoginService(IConfiguration configuration, UserRepository userRepository)
+    public AuthLoginService(IConfiguration configuration, UserRepository userRepository, AccountService accountService)
     {
         _configuration = configuration;
         _userRepository = userRepository;
+        _accountService = accountService;
     }
     
         public User AddUser(User user)
@@ -48,12 +51,12 @@ public class AuthLoginService : IService
 
         if (userToUpdate == null)
         {
-            throw new NotFoundException("Usuário não encontrado: " + userId);
+            throw new NotFoundException("User not found: " + userId);
         }
         
         userToUpdate.IsAdmin = user.IsAdmin;
         userToUpdate.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-        userToUpdate.UpdatedAt = DateTime.UtcNow;
+        userToUpdate.UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         
         _userRepository.Add(user);
         
@@ -71,7 +74,35 @@ public class AuthLoginService : IService
             throw new NotFoundException("User not found");
         }
         
+        // Checar se existe uma conta não excluída que esteja vinculada a esse usuário
+            
+        var account = _accountService.GetByUserId(userId);
+
+        if (account != null)
+        {
+            throw new ValidationException("Thre are an account linked to this user: " + account.Id);
+        }
+        
         _userRepository.RemoveById(userId);
+    }
+    
+    public User GetById(Guid id)
+    {
+        var user = _userRepository.GetById(id);
+
+        if (user == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+        
+        user.Password = null;
+        
+        return user;
+    }
+    
+    public IEnumerable<User> Query(UserQueryDto filter)
+    {
+        return _userRepository.Query(filter);
     }
     
     public IActionResult Login(LoginRequest request)
@@ -93,20 +124,6 @@ public class AuthLoginService : IService
                 isAdmin = user.IsAdmin
             }
         });
-    }
-
-    public User GetById(Guid id)
-    {
-        var user = _userRepository.GetById(id);
-
-        if (user == null)
-        {
-            throw new NotFoundException("User not found");
-        }
-        
-        user.Password = null;
-        
-        return user;
     }
     
     private string GenerateToken(User user, IConfiguration config)
