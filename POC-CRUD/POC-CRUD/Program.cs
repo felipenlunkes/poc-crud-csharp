@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Converters;
 using POC_CRUD.Configurations;
 using POC_CRUD.Exceptions;
 using ApiVersion = Microsoft.AspNetCore.Mvc.ApiVersion;
@@ -17,6 +18,7 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.Converters.Add(new StringEnumConverter()); // Serializa todos os enuns para string
     });
 
 builder.Services.AddApiVersioning(options =>
@@ -53,6 +55,21 @@ builder.Services.AddMySqlConfiguration(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
+// Configuração CORS para permitir requisições de origem cruzada do frontend Angular
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AngularPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
+// Configurações de envio de email
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
 // Consolidar o contexto da aplicação
 var app = builder.Build();
 
@@ -70,5 +87,7 @@ app.UseAuthorization();
 
 // Incluir handlers de exceções: mapeamento para resposta HTTP
 app.UseMiddleware<ExceptionHandler>();
+
+app.UseCors("AngularPolicy");
 
 app.Run();

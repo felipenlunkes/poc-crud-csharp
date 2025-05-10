@@ -19,6 +19,12 @@ public class UserRepository : IRepository
         _dbContext.Users.Add(user);
         _dbContext.SaveChanges();
     }
+    
+    public void Update(User user)
+    {
+        _dbContext.Users.Update(user);
+        _dbContext.SaveChanges();
+    }
 
     public User GetById(Guid id)
     {

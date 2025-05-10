@@ -8,13 +8,20 @@ namespace POC_CRUD.Services;
 public class AccountService : IService
 {
     private readonly AccountRepository _accountRepository;
+    private readonly UserRepository _userRepository;
+    private readonly EmailService _emailService;
+    private readonly ILogger<ExceptionHandler> _logger;
 
-    public AccountService(AccountRepository accountRepository)
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository, EmailService emailService,  ILogger<ExceptionHandler> logger)
     {
         _accountRepository = accountRepository;
+        _userRepository = userRepository;
+        _emailService = emailService;
+        _logger = logger;
+        
     }
-
-     public Account AddAccount(Account account)
+    
+    public Account AddAccount(Account account)
     {
         ValidateInputForAdd(account);
 
@@ -22,6 +29,8 @@ public class AccountService : IService
         account.UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         _accountRepository.Add(account);
+        
+        SendWelcomeEmail(account);
 
         return account;
     }
@@ -151,4 +160,28 @@ public class AccountService : IService
         
         return null;
     }
+
+    private async void SendWelcomeEmail(Account account)
+    {
+        try
+        {
+            var user = _userRepository.GetById(account.UserId);
+
+            var userEmail = user.Email;
+
+            var payload = new EmailPayload()
+            {
+                To = userEmail,
+                Subject = "Seja bem-vindo(a) ao POC-CRUD, " + account.Name,
+                Body = "Seja bem-vindo(a) ao POC-CRUD! Esse email garante que sua conta foi criada com sucesso."
+            };
+
+            await _emailService.SendEmail(payload);
+        }
+        catch (Exception exception)
+        {
+            _logger.Log(LogLevel.Error, exception, "Error sending email: " + exception.Message);
+        }
+    }
+
 }

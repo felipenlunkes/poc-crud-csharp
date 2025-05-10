@@ -1,6 +1,6 @@
 {
   "serviceName": "POC-CRUD",
-  "version": "0.0.14",
-  "build": "014",
-  "releaseDate": "2025-05-07"
+  "version": "0.1.0",
+  "build": "015",
+  "releaseDate": "2025-05-10"
 }

@@ -19,21 +19,29 @@ public class ExceptionHandler
         }
         catch (NotFoundException exception)
         {
-            _logger.LogWarning(exception, "Recurso não encontrado");
+            _logger.LogWarning(exception, "Resource not found");
             context.Response.StatusCode = StatusCodes.Status404NotFound;
             await context.Response.WriteAsJsonAsync(new { error = exception.Message });
         }
+
         catch (ValidationException exception)
         {
-            _logger.LogInformation(exception, "Erro de validação");
+            _logger.LogInformation(exception, "Validation error");
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsJsonAsync(new { error = exception.Message });
         }
-        catch (Exception exception)
+
+        catch (InvalidCredentialsException exception)
         {
-            _logger.LogError(exception, "Erro indefinido");
+            _logger.LogError(exception, "Invalid credentials");
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            await context.Response.WriteAsJsonAsync(new { error = exception.Message });
+        }
+        
+        catch (Exception exception) {
+            _logger.LogError(exception, "Undefined error");
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(new { error = "Erro interno do servidor" });
+            await context.Response.WriteAsJsonAsync(new { error = "Internal Server Error: " + exception.Message });
         }
     }
 }

@@ -29,15 +29,31 @@ public class Account
     [StringLength(14, MinimumLength = 14, ErrorMessage = "cnpj must have 14 characters without punctuation or dashes")]
     public string Cnpj { get; set; }
 
-    [JsonProperty("createdAt")]
-    public long CreatedAt { get; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    [Required(ErrorMessage = "birthDate is required")]
+    [JsonProperty("birthdayDate")]
+    public long? BirthdayDate { get; set; }
+    
+    [Required(ErrorMessage = "address is required")]
+    [JsonProperty("address")]
+    public AccountAddress Address { get; set; }
+    
+    [Required(ErrorMessage = "phone is required")]
+    [JsonProperty("phone")]
+    public AccountPhone Phone { get; set; }
+    
+    [Required(ErrorMessage = "role is required")]
+    [JsonProperty("role")]
+    public AccountRoleEnum? Role { get; set; }
+    
+    [JsonProperty("createdAt")] 
+    public long CreatedAt { get; private set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
     [JsonProperty("updatedAt")] 
     public long UpdatedAt { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
     [Required(ErrorMessage = "allowsAdvertising is required")]
     [JsonProperty("allowsAdvertising")]
-    public bool AllowsAdvertising { get; set; }
+    public bool? AllowsAdvertising { get; set; }
 
     [JsonIgnore] public bool Removed { get; set; }
 }

@@ -12,7 +12,7 @@ using POC_CRUD.Data;
 namespace POC_CRUD.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250508012942_InitialMigration")]
+    [Migration("20250510053917_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -34,6 +34,9 @@ namespace POC_CRUD.Migrations
                     b.Property<bool>("AllowsAdvertising")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<long>("BirthdayDate")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("BusinessName")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -46,12 +49,19 @@ namespace POC_CRUD.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("varchar(11)");
 
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.Property<bool>("Removed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<long>("UpdatedAt")
                         .HasColumnType("bigint");
@@ -160,6 +170,100 @@ namespace POC_CRUD.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("POC_CRUD.Models.Account", b =>
+                {
+                    b.OwnsOne("POC_CRUD.Models.AccountAddress", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("AccountId")
+                                .HasColumnType("char(36)");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)")
+                                .HasColumnName("AddressCity");
+
+                            b1.Property<string>("Complement")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)")
+                                .HasColumnName("AddressComplement");
+
+                            b1.Property<string>("District")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)")
+                                .HasColumnName("AddressDistrict");
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)")
+                                .HasColumnName("AddressNumber");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasMaxLength(15)
+                                .HasColumnType("varchar(15)")
+                                .HasColumnName("AddressPostalCode");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)")
+                                .HasColumnName("AddressState");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)")
+                                .HasColumnName("AddressStreet");
+
+                            b1.HasKey("AccountId");
+
+                            b1.ToTable("Accounts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AccountId");
+                        });
+
+                    b.OwnsOne("POC_CRUD.Models.AccountPhone", "Phone", b1 =>
+                        {
+                            b1.Property<Guid>("AccountId")
+                                .HasColumnType("char(36)");
+
+                            b1.Property<string>("CountryCode")
+                                .IsRequired()
+                                .HasMaxLength(5)
+                                .HasColumnType("varchar(5)")
+                                .HasColumnName("PhoneCountryCode");
+
+                            b1.Property<string>("Number")
+                                .HasMaxLength(15)
+                                .HasColumnType("varchar(15)")
+                                .HasColumnName("PhoneNumber");
+
+                            b1.Property<string>("StateCode")
+                                .IsRequired()
+                                .HasMaxLength(5)
+                                .HasColumnType("varchar(5)")
+                                .HasColumnName("PhoneStateCode");
+
+                            b1.HasKey("AccountId");
+
+                            b1.ToTable("Accounts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AccountId");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
+
+                    b.Navigation("Phone")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -9,6 +9,8 @@ public class User
     public Guid Id { get; set; }
 
     [Required(ErrorMessage = "email is required")]
+    [DataType(DataType.EmailAddress)]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
     [MaxLength(100)]
     [JsonProperty("email")]
     public string Email { get; set; }
@@ -20,10 +22,10 @@ public class User
     
     [Required(ErrorMessage = "isAdmin is required")]
     [JsonProperty("isAdmin")]
-    public bool IsAdmin { get; set; }
+    public bool? IsAdmin { get; set; }
 
     [JsonProperty("createdAt")]
-    public long CreatedAt { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); 
+    public long CreatedAt { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     
     [JsonProperty("updatedAt")]
     public long UpdatedAt { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();

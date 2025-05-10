@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "d0c974ec-949c-47b3-892a-5f4a57f7a5c7",
-		"name": "DoeTech",
+		"_postman_id": "b0f445c9-bc02-44c4-90c7-0ec64631b0a4",
+		"name": "POC-CRUD",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28758213",
-		"_collection_link": "https://interstellar-robot-632943.postman.co/workspace/Doetech~ee2ecfb9-6ef7-4ed9-9116-b9e2acc4e3f7/collection/28758213-d0c974ec-949c-47b3-892a-5f4a57f7a5c7?action=share&source=collection_link&creator=28758213"
+		"_collection_link": "https://interstellar-robot-632943.postman.co/workspace/Doetech~ee2ecfb9-6ef7-4ed9-9116-b9e2acc4e3f7/collection/28758213-b0f445c9-bc02-44c4-90c7-0ec64631b0a4?action=share&source=collection_link&creator=28758213"
 	},
 	"item": [
 		{
@@ -20,7 +20,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"diovanegmail.com\",\n    \"password\": \"Teste@Teste\",\n    \"isAdmin\": true\n}",
+							"raw": "{\n    \"email\": \"felipenldev@gmail.com\",\n    \"password\": \"Teste@Teste\",\n    \"isAdmin\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -53,7 +53,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"Email\": \"felipelunkes@gmail.com\",\n    \"Password\": \"Teste@Teste\"\n}",
+							"raw": "{\n    \"Email\": \"felipenldev@gmail.com\",\n    \"Password\": \"WY1OFVE7oyFwxpQn\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,7 +184,7 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "felipelunkes@gmail.com",
+									"value": "felipenldev@gmail.com",
 									"description": "email equals",
 									"disabled": true
 								},
@@ -194,14 +194,92 @@
 								},
 								{
 									"key": "createdAtFrom",
-									"value": null,
+									"value": "",
 									"disabled": true
 								},
 								{
 									"key": "createdAtTo",
-									"value": null,
+									"value": "",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImJjNDEzNDdmLTI2ODYtNGI1Yi04YmVjLTc1NTNjYTE0ZTAxNSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImZlbGlwZWx1bmtlc0BnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc0NjY2NzQzNiwiaXNzIjoiZG9ldGVjaCIsImF1ZCI6InVzdWFyaW9zIn0.zHJK_BfI8kTeCnkwR1BcrW9YT6RRA_8ktrRRNJSfJUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"felipenldev@gmail.com\",\n    \"password\": \"Teste@Teste\",\n    \"isAdmin\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest/v1/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"v1",
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset passsword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n    \"email\": \"felipenldev@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest/v1/user/recover",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"v1",
+								"user",
+								"recover"
 							]
 						}
 					},
@@ -222,7 +300,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\": \"bc41347f-2686-4b5b-8bec-7553ca14e015\",\n    \"name\": \"Felipe Lunkes\",\n    \"cpf\": \"12000000000\",\n    \"allowsAdvertising\": true\n}",
+							"raw": "{\n    \"userId\": \"fd4d8b3d-aec3-4459-be18-023420f6c3a0\",\n    \"name\": \"Felipe Lunkes\",\n    \"cpf\": \"12000000000\",\n    \"birthdayDate\": 1755552556365,\n    \"role\": \"Donor\",\n    \"phone\": {\n        \"countryCode\": \"55\",\n        \"stateCode\": \"31\",\n        \"phoneNumber\": \"31313131\"\n    },\n    \"address\": {\n        \"street\": \"Avenida do Contorno\",\n        \"number\": \"2000A\",\n        \"city\": \"Belo Horizonte\",\n        \"district\": \"Centro\",\n        \"state\": \"Minas Gerais\",\n        \"complement\": \"Loja 2\",\n        \"postalCode\": \"30882-665\"\n    },\n    \"allowsAdvertising\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -429,6 +507,43 @@
 								{
 									"key": "createdAtTo",
 									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Account",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"fd4d8b3d-aec3-4459-be18-023420f6c3a0\",\n    \"name\": \"Felipe Lunkes\",\n    \"cpf\": \"12000000000\",\n    \"birthdayDate\": 1755552556365,\n    \"role\": \"Donor\",\n    \"phone\": {\n        \"countryCode\": \"55\",\n        \"stateCode\": \"31\",\n        \"phoneNumber\": \"31313131\"\n    },\n    \"address\": {\n        \"street\": \"Avenida do Contorno\",\n        \"number\": \"2000A\",\n        \"city\": \"Belo Horizonte\",\n        \"district\": \"Centro\",\n        \"state\": \"Minas Gerais\",\n        \"complement\": \"Loja 2\",\n        \"postalCode\": \"30882-665\"\n    },\n    \"allowsAdvertising\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest/v1/account/:accountId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"v1",
+								"account",
+								":accountId"
+							],
+							"variable": [
+								{
+									"key": "accountId",
+									"value": ""
 								}
 							]
 						}
